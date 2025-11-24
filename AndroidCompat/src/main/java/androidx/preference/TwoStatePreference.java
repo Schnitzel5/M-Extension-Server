@@ -5,30 +5,68 @@ package androidx.preference;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.Context;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class TwoStatePreference extends Preference {
-    // Note: remove @JsonIgnore and implement methods if any extension ever uses these methods or the variables behind them
+    private CharSequence mSummaryOn;
+    private CharSequence mSummaryOff;
+    private boolean isChecked =false;
 
-    public TwoStatePreference(Context context) { super(context); }
+    public TwoStatePreference(Context context) {
+        super(context);
+        setDefaultValue(false);
+    }
 
-    public boolean isChecked() { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public boolean isChecked() { return isChecked; }
 
-    public void setChecked(boolean checked) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setChecked(boolean checked) { this.isChecked = isChecked; }
 
-    public CharSequence getSummaryOn() { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public CharSequence getSummaryOn() {
+        return mSummaryOn;
+    }
 
-    public void setSummaryOn(CharSequence summary) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setSummaryOn(CharSequence summary) {
+        this.mSummaryOn = summary;
+    }
 
-    public CharSequence getSummaryOff() { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public CharSequence getSummaryOff() {
+        return mSummaryOff;
+    }
 
-    public void setSummaryOff(CharSequence summary) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setSummaryOff(CharSequence summary) {
+        this.mSummaryOff = summary;
+    }
 
+    @Override
+    public CharSequence getSummary() {
+        final CharSequence summary = super.getSummary();
+        if (summary != null) {
+            return summary;
+        }
+
+        final boolean checked = (Boolean) getCurrentValue();
+        if (checked && mSummaryOn != null) {
+            return mSummaryOn;
+        } else if (!checked && mSummaryOff != null) {
+            return mSummaryOff;
+        }
+
+        return null;
+    }
+
+    @JsonIgnore
     public boolean getDisableDependentsState() { throw new RuntimeException("Stub!"); }
 
+    @JsonIgnore
     public void setDisableDependentsState(boolean disableDependentsState) { throw new RuntimeException("Stub!"); }
 
     /** Tachidesk specific API */

@@ -5,35 +5,58 @@ package androidx.preference;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.Context;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Set;
 
 public class MultiSelectListPreference extends DialogPreference {
+    // reference: https://android.googlesource.com/platform/frameworks/support/+/996971f962fcd554339a7cb2859cef9ca89dbcb7/preference/preference/src/main/java/androidx/preference/MultiSelectListPreference.java
     // Note: remove @JsonIgnore and implement methods if any extension ever uses these methods or the variables behind them
 
-    public MultiSelectListPreference(Context context) { super(context); }
+    private CharSequence[] entries;
+    private CharSequence[] entryValues;
+    private Set<String> values;
 
-    public void setEntries(CharSequence[] entries) { throw new RuntimeException("Stub!"); }
+    public MultiSelectListPreference(Context context) {
+        super(context);
+    }
 
-    public CharSequence[] getEntries() { throw new RuntimeException("Stub!"); }
+    public void setEntries(CharSequence[] entries) {
+        this.entries = entries;
+    }
 
-    public void setEntryValues(CharSequence[] entryValues) { throw new RuntimeException("Stub!"); }
+    public CharSequence[] getEntries() {
+        return entries;
+    }
 
-    public CharSequence[] getEntryValues() { throw new RuntimeException("Stub!"); }
+    public void setEntryValues(CharSequence[] entryValues) {
+        this.entryValues = entryValues;
+    }
 
-    public void setValues(Set<String> values) { throw new RuntimeException("Stub!"); }
+    public CharSequence[] getEntryValues() {
+        return entryValues;
+    }
 
-    public Set<String> getValues() { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setValues(Set<String> values) {
+        this.values = values;
+    }
 
-    public int findIndexOfValue(String value) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public Set<String> getValues() {
+        return values;
+    }
+
+    public int findIndexOfValue(String value) {
+        throw new RuntimeException("Stub!");
+    }
 
     /** Tachidesk specific API */
     @Override
     public String getDefaultValueType() {
-        return "Set";
+        return "Set<String>";
     }
 }

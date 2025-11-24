@@ -5,11 +5,11 @@ package androidx.preference;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.Context;
 import android.text.TextUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ListPreference extends Preference {
     // reference: https://android.googlesource.com/platform/frameworks/support/+/996971f962fcd554339a7cb2859cef9ca89dbcb7/preference/preference/src/main/java/androidx/preference/ListPreference.java
@@ -17,6 +17,8 @@ public class ListPreference extends Preference {
 
     private CharSequence[] entries;
     private CharSequence[] entryValues;
+    private String value;
+    public int valueIndex;
 
     public ListPreference(Context context) {
         super(context);
@@ -49,11 +51,14 @@ public class ListPreference extends Preference {
         this.entryValues = entryValues;
     }
 
-    public void setValueIndex(int index) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setValueIndex(int index) { this.valueIndex = index; }
 
-    public String getValue() { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public String getValue() { this.value = entryValues[valueIndex].toString(); return value; }
 
-    public void setValue(String value) { throw new RuntimeException("Stub!"); }
+    @JsonIgnore
+    public void setValue(String value) {entryValues[valueIndex] =value; this.value = value; }
 
     /** Tachidesk specific API */
     @Override

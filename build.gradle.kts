@@ -9,7 +9,7 @@ plugins {
 }
 
 allprojects {
-    group = "tachiyomi"
+    group = "mangayomi"
     version = "1.0"
 
     repositories {
@@ -25,7 +25,7 @@ allprojects {
 val projects = listOf(
     project(":AndroidCompat"),
     project(":AndroidCompat:Config"),
-    project(":inspector")
+    project(":server")
 )
 
 configure(projects) {

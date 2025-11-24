@@ -3,7 +3,7 @@ name: CI Publish
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -36,7 +36,7 @@ jobs:
       - name: Build project
         uses: gradle/gradle-command-action@982da8e78c05368c70dac0351bb82647a9e9a5d2 # v2
         with:
-          arguments: :inspector:shadowJar
+          arguments: :server:shadowJar
 
       - name: Upload Release
         uses: xresloader/upload-to-github-release@2290df57aa316d1dae840ca57126a33bda98f45f # v1

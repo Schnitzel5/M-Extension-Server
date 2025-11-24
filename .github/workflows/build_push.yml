@@ -34,4 +34,4 @@ jobs:
       - name: Build project
         uses: gradle/gradle-command-action@982da8e78c05368c70dac0351bb82647a9e9a5d2 # v2
         with:
-          arguments: :inspector:shadowJar
+          arguments: :server:shadowJar

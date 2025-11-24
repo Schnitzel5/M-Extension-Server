@@ -5,11 +5,15 @@ package androidx.preference;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A minimal implementation of androidx.preference.Preference
@@ -18,16 +22,21 @@ public class Preference {
     // reference: https://android.googlesource.com/platform/frameworks/support/+/996971f962fcd554339a7cb2859cef9ca89dbcb7/preference/preference/src/main/java/androidx/preference/Preference.java
     // Note: `Preference` doesn't actually hold or persist the value, `OnPreferenceChangeListener` is called and it's up to the extension to persist it.
 
+    @JsonIgnore
     protected Context context;
 
+    private boolean isVisible = true;
+    private boolean isEnabled = true;
     private String key;
     private CharSequence title;
     private CharSequence summary;
     private Object defaultValue;
 
     /** Tachidesk specific API */
+    @JsonIgnore
     private SharedPreferences sharedPreferences;
 
+    @JsonIgnore
     public OnPreferenceChangeListener onChangeListener;
 
     public Preference(Context context) {
@@ -63,7 +72,11 @@ public class Preference {
     }
 
     public void setEnabled(boolean enabled) {
-        throw new RuntimeException("Stub!");
+        isEnabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     public String getKey() {
@@ -96,6 +109,14 @@ public class Preference {
         return sharedPreferences;
     }
 
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    public boolean getVisible() {
+        return isVisible;
+    }
+
     /** Tachidesk specific API */
     public void setSharedPreferences(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
@@ -110,28 +131,36 @@ public class Preference {
     }
 
     /** Tachidesk specific API */
+    @SuppressWarnings("unchecked")
     public Object getCurrentValue() {
-        switch (getDefaultValueType()) {
-            case "String":
-                return sharedPreferences.getString(key, (String)defaultValue);
-            case "Boolean":
-                return sharedPreferences.getBoolean(key, (Boolean)defaultValue);
-            default:
-                throw new RuntimeException("Unsupported type");
+        if (key == null) {
+            return Objects.requireNonNullElseGet(defaultValue, () -> switch (getDefaultValueType()) {
+                case "String" -> "";
+                case "Boolean" -> false;
+                case "Set<String>" -> new HashSet<>();
+                default -> throw new RuntimeException("Unsupported type");
+            });
         }
+        return switch (getDefaultValueType()) {
+            case "String" -> sharedPreferences.getString(key, (String) defaultValue);
+            case "Boolean" -> sharedPreferences.getBoolean(key, (Boolean) defaultValue);
+            case "Set<String>" -> sharedPreferences.getStringSet(key, (Set<String>) defaultValue);
+            default -> throw new RuntimeException("Unsupported type");
+        };
     }
 
     /** Tachidesk specific API */
+    @SuppressWarnings("unchecked")
     public void saveNewValue(Object value) {
+        if (key == null) {
+            return;
+        }
         switch (getDefaultValueType()) {
-            case "String":
-                sharedPreferences.edit().putString(key, (String)value).apply();
-                break;
-            case "Boolean":
-                sharedPreferences.edit().putBoolean(key, (Boolean)value).apply();
-                break;
-            default:
-                throw new RuntimeException("Unsupported type");
+            case "String" -> sharedPreferences.edit().putString(key, (String) value).apply();
+            case "Boolean" -> sharedPreferences.edit().putBoolean(key, (Boolean) value).apply();
+            case "Set<String>" ->
+                    sharedPreferences.edit().putStringSet(key, (Set<String>) value).apply();
+            default -> throw new RuntimeException("Unsupported type");
         }
     }
 }

@@ -24,7 +24,7 @@ import java.util.prefs.Preferences
 
 @OptIn(ExperimentalSettingsImplementation::class, ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
 class JavaSharedPreferences(key: String) : SharedPreferences {
-    private val javaPreferences = Preferences.userRoot().node("inspector/$key")
+    private val javaPreferences = Preferences.userRoot().node("mextensionserver/$key")
     private val preferences = JvmPreferencesSettings(javaPreferences)
     private val listeners = mutableMapOf<SharedPreferences.OnSharedPreferenceChangeListener, PreferenceChangeListener>()
 

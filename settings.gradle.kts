@@ -1,5 +1,5 @@
-rootProject.name = "Tachiyomi Extensions Inspector"
+rootProject.name = "MExtensionServer"
 
 include("AndroidCompat")
 include("AndroidCompat:Config")
-include("inspector")
+include("server")

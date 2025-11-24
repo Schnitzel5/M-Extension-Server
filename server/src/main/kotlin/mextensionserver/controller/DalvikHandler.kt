@@ -1,0 +1,124 @@
+package mextensionserver.controller
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
+import eu.kanade.tachiyomi.source.online.HttpSource
+import fi.iki.elonen.NanoHTTPD
+import mextensionserver.impl.MExtensionServerLoader
+import mextensionserver.impl.MihonInvoker
+import mextensionserver.model.DataBody
+import mu.KotlinLogging
+import okhttp3.Cookie
+import okhttp3.HttpUrl
+
+class DalvikHandler {
+    private val logger = KotlinLogging.logger {}
+    private val objectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
+
+    fun serve(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response =
+        try {
+            // Parse JSON body first to get extension data
+            val body = mutableMapOf<String, String>()
+            session.parseBody(body)
+            val json = body["postData"] ?: throw IllegalArgumentException("No JSON body")
+
+            // Deserialize DataBody
+            val dataBody = objectMapper.readValue(json, DataBody::class.java)
+
+            // Load extension
+            val loadedExtension = MExtensionServerLoader.loadExtensionFromBase64(dataBody.data)
+
+            // Get domain from source
+            val domain =
+                loadedExtension.sources.firstOrNull()?.let { source ->
+                    try {
+                        val baseUrl = source.javaClass.getMethod("getBaseUrl").invoke(source) as String
+                        java.net.URI(baseUrl).host
+                    } catch (e: Exception) {
+                        null
+                    }
+                } ?: "localhost"
+
+            // Intercept Cookie header and save to global cookie jar
+            val cookies =
+                (session.headers["cookie"] ?: session.headers["Cookie"])
+                    ?.let { cookieHeader ->
+                        cookieHeader.split(";").map { cookieStr ->
+                            val trimmed = cookieStr.trim()
+                            val parts = trimmed.split("=", limit = 2)
+                            val name = parts[0].trim()
+                            val value = parts[1].trim()
+                            Cookie
+                                .Builder()
+                                .name(name)
+                                .value(value)
+                                .domain(domain.removePrefix("."))
+                                .path("/")
+                                .build()
+                        }
+                    }?.toList()
+            val network =
+                loadedExtension.sources.firstOrNull()?.let { source ->
+                    when (source) {
+                        is HttpSource -> source.network
+                        is AnimeHttpSource -> source.network
+                        else -> null
+                    }
+                }
+            if (cookies != null) {
+                network?.cookieStore?.addAll(
+                    HttpUrl
+                        .Builder()
+                        .scheme("http")
+                        .host(domain.removePrefix("."))
+                        .build(),
+                    cookies,
+                )
+            }
+            val ua = (session.headers["user-agent"] ?: session.headers["User-Agent"])
+            if (ua != null) {
+                network?.setUA(ua)
+            }
+
+            // Invoke method
+            val result = MihonInvoker.invokeMethod(loadedExtension, dataBody)
+
+            // Serialize response
+            val responseJson = objectMapper.writeValueAsString(result)
+
+            NanoHTTPD.newFixedLengthResponse(
+                NanoHTTPD.Response.Status.OK,
+                "application/json",
+                responseJson,
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Error handling request" }
+            val status =
+                when (e) {
+                    is eu.kanade.tachiyomi.network.HttpException -> {
+                        when (e.code) {
+                            400 -> NanoHTTPD.Response.Status.BAD_REQUEST
+                            401 -> NanoHTTPD.Response.Status.UNAUTHORIZED
+                            403 -> NanoHTTPD.Response.Status.FORBIDDEN
+                            404 -> NanoHTTPD.Response.Status.NOT_FOUND
+                            429 -> NanoHTTPD.Response.Status.INTERNAL_ERROR
+                            500 -> NanoHTTPD.Response.Status.INTERNAL_ERROR
+                            else -> NanoHTTPD.Response.Status.INTERNAL_ERROR
+                        }
+                    }
+                    else -> NanoHTTPD.Response.Status.INTERNAL_ERROR
+                }
+            val errorResponse =
+                mapOf(
+                    "error" to (e.message ?: "Unknown error"),
+                    "code" to (if (e is eu.kanade.tachiyomi.network.HttpException) e.code else 500),
+                )
+            val errorJson = objectMapper.writeValueAsString(errorResponse)
+            NanoHTTPD.newFixedLengthResponse(
+                status,
+                "application/json",
+                errorJson,
+            )
+        }
+}
