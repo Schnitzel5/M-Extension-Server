@@ -55,6 +55,14 @@ class MemoryCookieJar : CookieJar {
         cache.remove(wrapped)
         cache.add(wrapped)
     }
+
+    @Synchronized
+    fun addAll(
+        url: HttpUrl,
+        cookies: List<Cookie>,
+    ) {
+        cookies.forEach { addCookie(it) }
+    }
 }
 
 class WrappedCookie private constructor(

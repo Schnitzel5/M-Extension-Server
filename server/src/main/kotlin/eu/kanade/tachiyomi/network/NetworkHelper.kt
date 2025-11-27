@@ -12,29 +12,20 @@ import android.content.Context
 import eu.kanade.tachiyomi.network.interceptor.CloudflareInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import java.net.CookieHandler
-import java.net.CookieManager
-import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 
 class NetworkHelper(
     val context: Context,
 ) {
     // Tachidesk -->
-    val cookieStore = PersistentCookieStore(context)
-
-    init {
-        CookieHandler.setDefault(
-            CookieManager(cookieStore, CookiePolicy.ACCEPT_ALL),
-        )
-    }
+    val cookieStore = MemoryCookieJar()
     // Tachidesk <--
 
     val client by lazy {
         val builder =
             OkHttpClient
                 .Builder()
-                .cookieJar(PersistentCookieJar(cookieStore))
+                .cookieJar(cookieStore)
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.MINUTES)
