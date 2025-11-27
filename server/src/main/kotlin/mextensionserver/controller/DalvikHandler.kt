@@ -67,7 +67,7 @@ class DalvikHandler {
                     }
                 }
             if (cookies != null) {
-                network?.cookieStore?.addAll(
+                network?.cookieJar?.addAll(
                     HttpUrl
                         .Builder()
                         .scheme("http")
