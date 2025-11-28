@@ -1,12 +1,14 @@
-# Extensions inspector
+# M-Extension-Server — headless Mihon (Tachiyomi)/Aniyomi extensions server
 
-This is a headless fork of [Tachidesk](https://github.com/Suwayomi/Tachidesk) that is used to inspect (i.e. extract some information from) [Tachiyomi's extension APKs](http://github.com/tachiyomiorg/tachiyomi-extensions).
+M-Extension-Server is a lightweight, headless service for running Mihon (Tachiyomi)/Aniyomi extensions (APKs). It dynamically loads extensions from Base64-encoded APKs, executes catalogue and content methods (manga/anime), and returns results via a small HTTP API.
 
 ## Credits
 
 The `AndroidCompat` module was originally developed by [@null-dev](https://github.com/null-dev) for [TachiWeb-Server](https://github.com/Tachiweb/TachiWeb-server) and is licensed under `Apache License Version 2.0`.
 
-Parts of [Tachiyomi](https://github.com/tachiyomiorg/tachiyomi) is adopted into this codebase, also licensed under `Apache License Version 2.0`.
+Parts of [Mihon (Tachiyomi)](https://github.com/mihonapp/mihon) is adopted into this codebase, also licensed under `Apache License Version 2.0`.
+
+Parts of [Aniyomi](https://github.com/aniyomiorg/aniyomi) is adopted into this codebase, also licensed under `Apache License Version 2.0`.
 
 You can obtain a copy of `Apache License Version 2.0` from  http://www.apache.org/licenses/LICENSE-2.0
 
@@ -15,7 +17,15 @@ Changes to both codebases is licensed under `MPL 2.0` as the rest of this projec
 ## License
 
 ```
-Copyright (C) The Tachiyomi Open Source Project
+Copyright © 2024 Aniyomi Open Source Project
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+```
+
+```
+Copyright © 2024 Mihon Open Source Project
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
