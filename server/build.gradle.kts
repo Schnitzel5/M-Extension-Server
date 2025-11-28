@@ -74,7 +74,7 @@ tasks {
                 mapOf(
                     "Main-Class" to MainClass,
                     "Implementation-Title" to rootProject.name,
-                    "Implementation-Vendor" to "The Keiyoushi Project",
+                    "Implementation-Vendor" to "Mangayomi",
                     "Specification-Version" to m_extension_serverVersion,
                     "Implementation-Version" to m_extension_serverRevision
                 )
