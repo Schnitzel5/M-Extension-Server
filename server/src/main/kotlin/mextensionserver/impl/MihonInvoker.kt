@@ -514,7 +514,20 @@ object MihonInvoker {
         val prefs = context.getSharedPreferences("source_$sourceId", 0)
         val editor = prefs.edit()
         for (prefMap in preferences) {
-            val key = prefMap["key"] as? String ?: continue
+            val rawKey = prefMap["key"] as? String ?: continue
+            // Java Preferences has 80 char limit for keys, hash long keys
+            val key =
+                if (rawKey.length > 80) {
+                    val hash =
+                        java.security.MessageDigest
+                            .getInstance("SHA-256")
+                            .digest(rawKey.toByteArray())
+                            .joinToString("") { "%02x".format(it) }
+                            .take(64)
+                    "hash_$hash"
+                } else {
+                    rawKey
+                }
             when {
                 prefMap.containsKey("checkBoxPreference") -> {
                     val checkBox = prefMap["checkBoxPreference"] as? Map<*, *>
