@@ -32,14 +32,18 @@ import android.os.*;
 import android.view.Display;
 import android.view.DisplayAdjustments;
 import org.jetbrains.annotations.NotNull;
-import org.koin.core.Koin;
+import org.jetbrains.annotations.Nullable;
+import org.kodein.di.DI;
+import org.kodein.di.DIAware;
+import org.kodein.di.DIContext;
+import org.kodein.di.DITrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.nulldev.androidcompat.info.ApplicationInfoImpl;
 import xyz.nulldev.androidcompat.io.AndroidFiles;
 import xyz.nulldev.androidcompat.io.sharedprefs.JavaSharedPreferences;
 import xyz.nulldev.androidcompat.service.ServiceSupport;
-import xyz.nulldev.androidcompat.util.KoinGlobalHelper;
+import xyz.nulldev.androidcompat.util.KodeinGlobalHelper;
 
 import java.io.*;
 import java.util.HashMap;
@@ -50,25 +54,26 @@ import java.util.Map;
  * Custom context implementation.
  *
  */
-public class CustomContext extends Context {
-    private final Koin koin;
+public class CustomContext extends Context implements DIAware {
+    private final DI kodein;
     public CustomContext() {
-        this(KoinGlobalHelper.koin());
+        this(KodeinGlobalHelper.kodein());
     }
 
-    public CustomContext(Koin koin) {
-        this.koin = koin;
+    public CustomContext(DI kodein) {
+        this.kodein = kodein;
 
         //Init configs
-        androidFiles = KoinGlobalHelper.instance(AndroidFiles.class, getDi());
-        applicationInfo = KoinGlobalHelper.instance(ApplicationInfoImpl.class, getDi());
-        serviceSupport = KoinGlobalHelper.instance(ServiceSupport.class, getDi());
-        fakePackageManager = KoinGlobalHelper.instance(FakePackageManager.class, getDi());
+        androidFiles = KodeinGlobalHelper.instance(AndroidFiles.class, getDi());
+        applicationInfo = KodeinGlobalHelper.instance(ApplicationInfoImpl.class, getDi());
+        serviceSupport = KodeinGlobalHelper.instance(ServiceSupport.class, getDi());
+        fakePackageManager = KodeinGlobalHelper.instance(FakePackageManager.class, getDi());
     }
 
     @NotNull
-    public Koin getDi() {
-        return koin;
+    @Override
+    public DI getDi() {
+        return kodein;
     }
 
     private AndroidFiles androidFiles;
@@ -717,5 +722,16 @@ public class CustomContext extends Context {
     public boolean isCredentialProtectedStorage() {
         return false;
     }
-}
 
+    @NotNull
+    @Override
+    public DIContext<?> getDiContext() {
+        return getDi().getDiContext();
+    }
+
+    @Nullable
+    @Override
+    public DITrigger getDiTrigger() {
+        return null;
+    }
+}

@@ -1,12 +1,14 @@
 package xyz.nulldev.androidcompat.pm
 
 import net.dongliu.apk.parser.ApkParsers
-import org.koin.mp.KoinPlatformTools
+import org.kodein.di.DI
+import org.kodein.di.conf.global
+import org.kodein.di.instance
 import xyz.nulldev.androidcompat.io.AndroidFiles
 import java.io.File
 
 class PackageController {
-    private val androidFiles: AndroidFiles by KoinPlatformTools.defaultContext().get().inject()
+    private val androidFiles: AndroidFiles by DI.global.instance<AndroidFiles>()
     private val uninstallListeners = mutableListOf<(String) -> Unit>()
 
     fun registerUninstallListener(listener: (String) -> Unit) {

@@ -28,8 +28,6 @@ allprojects {
 }
 
 val projects = listOf(
-    project(":AndroidCompat"),
-    project(":AndroidCompat:Config"),
     project(":server")
 )
 

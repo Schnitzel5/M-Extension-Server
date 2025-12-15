@@ -83,7 +83,10 @@ import org.cef.network.CefPostData
 import org.cef.network.CefPostDataElement
 import org.cef.network.CefRequest
 import org.cef.network.CefResponse
-import org.koin.mp.KoinPlatformTools
+import org.kodein.di.DI
+import org.kodein.di.conf.global
+import org.kodein.di.instance
+import xyz.nulldev.androidcompat.io.AndroidFiles
 import java.io.BufferedWriter
 import java.io.File
 import java.io.IOException
@@ -114,7 +117,7 @@ class KcefWebViewProvider(
         const val QUERY_FN = "__\$_suwayomiQuery"
         const val QUERY_CANCEL_FN = "__\$_suwayomiQueryCancel"
 
-        private val initHandler: InitBrowserHandler by KoinPlatformTools.defaultContext().get().inject()
+        private val initHandler: InitBrowserHandler by DI.global.instance<InitBrowserHandler>()
     }
 
     public interface InitBrowserHandler {

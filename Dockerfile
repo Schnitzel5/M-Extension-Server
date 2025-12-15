@@ -9,7 +9,7 @@ RUN chmod +x ./AndroidCompat/getAndroid.sh
 RUN ./AndroidCompat/getAndroid.sh
 RUN ./gradlew :server:shadowJar --no-daemon --stacktrace
 
-FROM eclipse-temurin:21.0.9_10-jre-ubi9-minimal
+FROM gcr.io/distroless/java21-debian12
 ARG JAR_FILE=/usr/app/server/build/*.jar
 COPY --from=build $JAR_FILE /app/runner.jar
 EXPOSE 8080
