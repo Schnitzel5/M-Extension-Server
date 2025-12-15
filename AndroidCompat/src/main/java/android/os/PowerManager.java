@@ -25,7 +25,7 @@ public final class PowerManager {
 
     public static final PowerManager INSTANCE = new PowerManager();
 
-    public PowerManager.WakeLock newWakeLock(int levelAndFlags, String tag) {
+    public WakeLock newWakeLock(int levelAndFlags, String tag) {
         return new WakeLock();
     }
 

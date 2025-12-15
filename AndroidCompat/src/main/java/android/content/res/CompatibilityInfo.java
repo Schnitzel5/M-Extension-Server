@@ -288,7 +288,7 @@ public class CompatibilityInfo implements Parcelable {
         throw new RuntimeException("Stub!");
     }
 
-    public static final Parcelable.Creator<CompatibilityInfo> CREATOR = null;
+    public static final Creator<CompatibilityInfo> CREATOR = null;
 
     private CompatibilityInfo(Parcel source) {
         throw new RuntimeException("Stub!");

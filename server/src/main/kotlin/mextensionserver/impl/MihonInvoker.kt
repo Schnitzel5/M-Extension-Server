@@ -15,12 +15,12 @@ import eu.kanade.tachiyomi.animesource.model.SEpisode
 import eu.kanade.tachiyomi.animesource.model.Video
 import eu.kanade.tachiyomi.animesource.online.AnimeHttpSource
 import eu.kanade.tachiyomi.source.CatalogueSource
-import eu.kanade.tachiyomi.source.ConfigurableSource
 import eu.kanade.tachiyomi.source.model.Filter
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.SChapter
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
 import mextensionserver.model.AnimeData
 import mextensionserver.model.AnimeResponse
@@ -35,8 +35,6 @@ import mextensionserver.model.MangaData
 import mextensionserver.model.MangaResponse
 import mextensionserver.model.toJAnime
 import mextensionserver.model.toJManga
-import mu.KotlinLogging
-import xyz.nulldev.androidcompat.androidimpl.CustomContext
 
 object MihonInvoker {
     private val logger = KotlinLogging.logger {}
@@ -474,7 +472,7 @@ object MihonInvoker {
                                 mapOf(
                                     "title" to preference.title,
                                     "summary" to (preference.summary ?: ""),
-                                    "valueIndex" to preference.valueIndex,
+                                    "valueIndex" to preference.findIndexOfValue(preference.value),
                                     "entries" to preference.entries,
                                     "entryValues" to preference.entryValues,
                                 ),

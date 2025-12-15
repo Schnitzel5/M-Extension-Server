@@ -328,8 +328,8 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
         return pkg != null ? new ComponentName(pkg, in) : null;
     }
     
-    public static final Parcelable.Creator<ComponentName> CREATOR
-            = new Parcelable.Creator<ComponentName>() {
+    public static final Creator<ComponentName> CREATOR
+            = new Creator<ComponentName>() {
         public ComponentName createFromParcel(Parcel in) {
             return new ComponentName(in);
         }

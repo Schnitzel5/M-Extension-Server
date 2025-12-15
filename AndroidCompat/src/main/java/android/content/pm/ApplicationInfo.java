@@ -97,7 +97,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * include/exclude criteria.
      * <p>If android:allowBackup is set to false, this attribute is ignored.
      *
-     * @see android.content.Context#getNoBackupFilesDir()
+     * @see Context#getNoBackupFilesDir()
      * @see #FLAG_ALLOW_BACKUP
      *
      * @hide
@@ -824,8 +824,8 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         dest.writeInt(fullBackupContent);
         dest.writeInt(networkSecurityConfigRes);
     }
-    public static final Parcelable.Creator<ApplicationInfo> CREATOR
-            = new Parcelable.Creator<ApplicationInfo>() {
+    public static final Creator<ApplicationInfo> CREATOR
+            = new Creator<ApplicationInfo>() {
         public ApplicationInfo createFromParcel(Parcel source) {
             return new ApplicationInfo(source);
         }

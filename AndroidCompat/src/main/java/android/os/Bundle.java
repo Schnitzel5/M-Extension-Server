@@ -1108,8 +1108,8 @@ public final class Bundle extends BaseBundle implements Cloneable, Parcelable {
             return null;
         }
     }
-    public static final Parcelable.Creator<Bundle> CREATOR =
-        new Parcelable.Creator<Bundle>() {
+    public static final Creator<Bundle> CREATOR =
+        new Creator<Bundle>() {
         @Override
         public Bundle createFromParcel(Parcel in) {
             return in.readBundle();

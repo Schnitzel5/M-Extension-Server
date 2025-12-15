@@ -39,10 +39,10 @@ import java.util.*;
  * An intent is an abstract description of an operation to be performed.  It
  * can be used with {@link Context#startActivity(Intent) startActivity} to
  * launch an {@link android.app.Activity},
- * {@link android.content.Context#sendBroadcast(Intent) broadcastIntent} to
+ * {@link Context#sendBroadcast(Intent) broadcastIntent} to
  * send it to any interested {@link BroadcastReceiver BroadcastReceiver} components,
- * and {@link android.content.Context#startService} or
- * {@link android.content.Context#bindService} to communicate with a
+ * and {@link Context#startService} or
+ * {@link Context#bindService} to communicate with a
  * background {@link android.app.Service}.
  *
  * <p>An Intent provides a facility for performing late runtime binding between the code in
@@ -67,7 +67,7 @@ import java.util.*;
  *     etc.</p>
  *   </li>
  *   <li> <p><b>data</b> -- The data to operate on, such as a person record
- *     in the contacts database, expressed as a {@link android.net.Uri}.</p>
+ *     in the contacts database, expressed as a {@link Uri}.</p>
  *   </li>
  * </ul>
  *
@@ -442,7 +442,7 @@ import java.util.*;
  * SELECTED_ALTERNATIVE.  Implementing
  * these categories allows others to find the special action it provides
  * without directly knowing about it, through the
- * {@link android.content.pm.PackageManager#queryIntentActivityOptions} method, or
+ * {@link PackageManager#queryIntentActivityOptions} method, or
  * more often to build dynamic menu items with
  * {@link android.view.Menu#addIntentOptions}.  Note that in the intent
  * template here was also supply an explicit name for the template
@@ -682,7 +682,7 @@ public class Intent implements Parcelable, Cloneable {
      * @see #EXTRA_SHORTCUT_NAME
      * @see #EXTRA_SHORTCUT_ICON
      * @see #EXTRA_SHORTCUT_ICON_RESOURCE
-     * @see android.content.Intent.ShortcutIconResource
+     * @see ShortcutIconResource
      */
     @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_CREATE_SHORTCUT = "android.intent.action.CREATE_SHORTCUT";
@@ -708,7 +708,7 @@ public class Intent implements Parcelable, Cloneable {
      * The name of the extra used to define the icon, as a ShortcutIconResource, of a shortcut.
      *
      * @see #ACTION_CREATE_SHORTCUT
-     * @see android.content.Intent.ShortcutIconResource
+     * @see ShortcutIconResource
      */
     public static final String EXTRA_SHORTCUT_ICON_RESOURCE =
             "android.intent.extra.shortcut.ICON_RESOURCE";
@@ -766,8 +766,8 @@ public class Intent implements Parcelable, Cloneable {
         /**
          * Used to read a ShortcutIconResource from a Parcel.
          */
-        public static final Parcelable.Creator<ShortcutIconResource> CREATOR =
-            new Parcelable.Creator<ShortcutIconResource>() {
+        public static final Creator<ShortcutIconResource> CREATOR =
+            new Creator<ShortcutIconResource>() {
                 public ShortcutIconResource createFromParcel(Parcel source) {
                     ShortcutIconResource icon = new ShortcutIconResource();
                     icon.packageName = source.readString();
@@ -997,10 +997,10 @@ public class Intent implements Parcelable, Cloneable {
      * numbers.  Applications can <strong>dial</strong> emergency numbers using
      * {@link #ACTION_DIAL}, however.
      *
-     * <p>Note: if you app targets {@link android.os.Build.VERSION_CODES#M M}
+     * <p>Note: if you app targets {@link Build.VERSION_CODES#M M}
      * and above and declares as using the {@link android.Manifest.permission#CALL_PHONE}
      * permission which is not granted, then attempting to use this action will
-     * result in a {@link java.lang.SecurityException}.
+     * result in a {@link SecurityException}.
      */
     @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
     public static final String ACTION_CALL = "android.intent.action.CALL";
@@ -1058,7 +1058,7 @@ public class Intent implements Parcelable, Cloneable {
      * also optionally supply {@link #EXTRA_HTML_TEXT} for clients to retrieve
      * your text with HTML formatting.
      * <p>
-     * As of {@link android.os.Build.VERSION_CODES#JELLY_BEAN}, the data
+     * As of {@link Build.VERSION_CODES#JELLY_BEAN}, the data
      * being sent can be supplied through {@link #setClipData(ClipData)}.  This
      * allows you to use {@link #FLAG_GRANT_READ_URI_PERMISSION} when sharing
      * content: URIs and other advanced features of {@link ClipData}.  If
@@ -1096,7 +1096,7 @@ public class Intent implements Parcelable, Cloneable {
      * be image/jpg, but if you are sending image/jpg and image/png, then the
      * intent's type should be image/*.
      * <p>
-     * As of {@link android.os.Build.VERSION_CODES#JELLY_BEAN}, the data
+     * As of {@link Build.VERSION_CODES#JELLY_BEAN}, the data
      * being sent can be supplied through {@link #setClipData(ClipData)}.  This
      * allows you to use {@link #FLAG_GRANT_READ_URI_PERMISSION} when sharing
      * content: URIs and other advanced features of {@link ClipData}.  If
@@ -1365,7 +1365,7 @@ public class Intent implements Parcelable, Cloneable {
      * Activity Action: Launch application installer.
      * <p>
      * Input: The data must be a content: or file: URI at which the application
-     * can be retrieved.  As of {@link android.os.Build.VERSION_CODES#JELLY_BEAN_MR1},
+     * can be retrieved.  As of {@link Build.VERSION_CODES#JELLY_BEAN_MR1},
      * you can also use "package:<package-name>" to install an application for the
      * current user that is already installed for another user. You can optionally supply
      * {@link #EXTRA_INSTALLER_PACKAGE_NAME}, {@link #EXTRA_NOT_UNKNOWN_SOURCE},
@@ -1436,7 +1436,7 @@ public class Intent implements Parcelable, Cloneable {
             = "android.intent.extra.ORIGINATING_URI";
     /**
      * This extra can be used with any Intent used to launch an activity, supplying information
-     * about who is launching that activity.  This field contains a {@link android.net.Uri}
+     * about who is launching that activity.  This field contains a {@link Uri}
      * object, typically an http: or https: URI of the web site that the referral came from;
      * it can also use the {@link #URI_ANDROID_APP_SCHEME android-app:} scheme to identify
      * a native application that it came from.
@@ -1453,7 +1453,7 @@ public class Intent implements Parcelable, Cloneable {
             = "android.intent.extra.REFERRER";
     /**
      * Alternate version of {@link #EXTRA_REFERRER} that supplies the URI as a String rather
-     * than a {@link android.net.Uri} object.  Only for use in cases where Uri objects can
+     * than a {@link Uri} object.  Only for use in cases where Uri objects can
      * not be created, in particular when Intent extras are supplied through the
      * {@link #URI_INTENT_SCHEME intent:} or {@link #URI_ANDROID_APP_SCHEME android-app:}
      * schemes.
@@ -1474,7 +1474,7 @@ public class Intent implements Parcelable, Cloneable {
      * Used as a boolean extra field with {@link #ACTION_INSTALL_PACKAGE} to install a
      * package.  Tells the installer UI to skip the confirmation with the user
      * if the .apk is replacing an existing one.
-     * @deprecated As of {@link android.os.Build.VERSION_CODES#JELLY_BEAN}, Android
+     * @deprecated As of {@link Build.VERSION_CODES#JELLY_BEAN}, Android
      * will no longer show an interstitial message about updating existing
      * applications so this is no longer needed.
      */
@@ -1660,7 +1660,7 @@ public class Intent implements Parcelable, Cloneable {
      * nothing to do with the screen turning off.  To determine the
      * actual state of the screen, use {@link android.view.Display#getState}.
      * </p><p>
-     * See {@link android.os.PowerManager#isInteractive} for details.
+     * See {@link PowerManager#isInteractive} for details.
      * </p>
      * You <em>cannot</em> receive this through components declared in
      * manifests, only by explicitly registering for it with
@@ -1683,7 +1683,7 @@ public class Intent implements Parcelable, Cloneable {
      * nothing to do with the screen turning on.  To determine the
      * actual state of the screen, use {@link android.view.Display#getState}.
      * </p><p>
-     * See {@link android.os.PowerManager#isInteractive} for details.
+     * See {@link PowerManager#isInteractive} for details.
      * </p>
      * You <em>cannot</em> receive this through components declared in
      * manifests, only by explicitly registering for it with
@@ -1776,7 +1776,7 @@ public class Intent implements Parcelable, Cloneable {
      * permission in order to receive this broadcast.
      * <p>
      * This broadcast is sent immediately at boot by all devices (regardless of
-     * direct boot support) running {@link android.os.Build.VERSION_CODES#N} or
+     * direct boot support) running {@link Build.VERSION_CODES#N} or
      * higher. Upon receipt of this broadcast, the user is still locked and only
      * device-protected storage can be accessed safely. If you want to access
      * credential-protected storage, you need to wait for the user to be
@@ -2484,7 +2484,7 @@ public class Intent implements Parcelable, Cloneable {
      * Same as {@link android.media.AudioManager#ACTION_HEADSET_PLUG}, to be consulted for value
      *   and documentation.
      * <p>If the minimum SDK version of your application is
-     * {@link android.os.Build.VERSION_CODES#LOLLIPOP}, it is recommended to refer
+     * {@link Build.VERSION_CODES#LOLLIPOP}, it is recommended to refer
      * to the <code>AudioManager</code> constant in your receiver registration code instead.
      */
     @SdkConstant(SdkConstantType.BROADCAST_INTENT_ACTION)
@@ -2517,7 +2517,7 @@ public class Intent implements Parcelable, Cloneable {
      *
      * <p>The Intent will have the following extra value:</p>
      * <ul>
-     *   <li><em>{@link android.content.Intent#EXTRA_PHONE_NUMBER}</em> -
+     *   <li><em>{@link Intent#EXTRA_PHONE_NUMBER}</em> -
      *       the phone number originally intended to be dialed.</li>
      * </ul>
      * <p>Once the broadcast is finished, the resultData is used as the actual
@@ -3627,22 +3627,22 @@ public class Intent implements Parcelable, Cloneable {
     public static final String EXTRA_USER_REQUESTED_SHUTDOWN =
             "android.intent.extra.USER_REQUESTED_SHUTDOWN";
     /**
-     * Used as a boolean extra field in {@link android.content.Intent#ACTION_PACKAGE_REMOVED} or
-     * {@link android.content.Intent#ACTION_PACKAGE_CHANGED} intents to override the default action
+     * Used as a boolean extra field in {@link Intent#ACTION_PACKAGE_REMOVED} or
+     * {@link Intent#ACTION_PACKAGE_CHANGED} intents to override the default action
      * of restarting the application.
      */
     public static final String EXTRA_DONT_KILL_APP = "android.intent.extra.DONT_KILL_APP";
     /**
      * A String holding the phone number originally entered in
-     * {@link android.content.Intent#ACTION_NEW_OUTGOING_CALL}, or the actual
-     * number to call in a {@link android.content.Intent#ACTION_CALL}.
+     * {@link Intent#ACTION_NEW_OUTGOING_CALL}, or the actual
+     * number to call in a {@link Intent#ACTION_CALL}.
      */
     public static final String EXTRA_PHONE_NUMBER = "android.intent.extra.PHONE_NUMBER";
     /**
-     * Used as an int extra field in {@link android.content.Intent#ACTION_UID_REMOVED}
+     * Used as an int extra field in {@link Intent#ACTION_UID_REMOVED}
      * intents to supply the uid the package had been assigned.  Also an optional
-     * extra in {@link android.content.Intent#ACTION_PACKAGE_REMOVED} or
-     * {@link android.content.Intent#ACTION_PACKAGE_CHANGED} for the same
+     * extra in {@link Intent#ACTION_PACKAGE_REMOVED} or
+     * {@link Intent#ACTION_PACKAGE_CHANGED} for the same
      * purpose.
      */
     public static final String EXTRA_UID = "android.intent.extra.UID";
@@ -3652,7 +3652,7 @@ public class Intent implements Parcelable, Cloneable {
     @SystemApi
     public static final String EXTRA_PACKAGES = "android.intent.extra.PACKAGES";
     /**
-     * Used as a boolean extra field in {@link android.content.Intent#ACTION_PACKAGE_REMOVED}
+     * Used as a boolean extra field in {@link Intent#ACTION_PACKAGE_REMOVED}
      * intents to indicate whether this represents a full uninstall (removing
      * both the code and its data) or a partial uninstall (leaving its data,
      * implying that this is an update).
@@ -3660,14 +3660,14 @@ public class Intent implements Parcelable, Cloneable {
     public static final String EXTRA_DATA_REMOVED = "android.intent.extra.DATA_REMOVED";
     /**
      * @hide
-     * Used as a boolean extra field in {@link android.content.Intent#ACTION_PACKAGE_REMOVED}
+     * Used as a boolean extra field in {@link Intent#ACTION_PACKAGE_REMOVED}
      * intents to indicate that at this point the package has been removed for
      * all users on the device.
      */
     public static final String EXTRA_REMOVED_FOR_ALL_USERS
             = "android.intent.extra.REMOVED_FOR_ALL_USERS";
     /**
-     * Used as a boolean extra field in {@link android.content.Intent#ACTION_PACKAGE_REMOVED}
+     * Used as a boolean extra field in {@link Intent#ACTION_PACKAGE_REMOVED}
      * intents to indicate that this is a replacement of the package, so this
      * broadcast will immediately be followed by an add broadcast for a
      * different version of the same package.
@@ -3683,37 +3683,37 @@ public class Intent implements Parcelable, Cloneable {
      */
     public static final String EXTRA_ALARM_COUNT = "android.intent.extra.ALARM_COUNT";
     /**
-     * Used as an int extra field in {@link android.content.Intent#ACTION_DOCK_EVENT}
+     * Used as an int extra field in {@link Intent#ACTION_DOCK_EVENT}
      * intents to request the dock state.  Possible values are
-     * {@link android.content.Intent#EXTRA_DOCK_STATE_UNDOCKED},
-     * {@link android.content.Intent#EXTRA_DOCK_STATE_DESK}, or
-     * {@link android.content.Intent#EXTRA_DOCK_STATE_CAR}, or
-     * {@link android.content.Intent#EXTRA_DOCK_STATE_LE_DESK}, or
-     * {@link android.content.Intent#EXTRA_DOCK_STATE_HE_DESK}.
+     * {@link Intent#EXTRA_DOCK_STATE_UNDOCKED},
+     * {@link Intent#EXTRA_DOCK_STATE_DESK}, or
+     * {@link Intent#EXTRA_DOCK_STATE_CAR}, or
+     * {@link Intent#EXTRA_DOCK_STATE_LE_DESK}, or
+     * {@link Intent#EXTRA_DOCK_STATE_HE_DESK}.
      */
     public static final String EXTRA_DOCK_STATE = "android.intent.extra.DOCK_STATE";
     /**
-     * Used as an int value for {@link android.content.Intent#EXTRA_DOCK_STATE}
+     * Used as an int value for {@link Intent#EXTRA_DOCK_STATE}
      * to represent that the phone is not in any dock.
      */
     public static final int EXTRA_DOCK_STATE_UNDOCKED = 0;
     /**
-     * Used as an int value for {@link android.content.Intent#EXTRA_DOCK_STATE}
+     * Used as an int value for {@link Intent#EXTRA_DOCK_STATE}
      * to represent that the phone is in a desk dock.
      */
     public static final int EXTRA_DOCK_STATE_DESK = 1;
     /**
-     * Used as an int value for {@link android.content.Intent#EXTRA_DOCK_STATE}
+     * Used as an int value for {@link Intent#EXTRA_DOCK_STATE}
      * to represent that the phone is in a car dock.
      */
     public static final int EXTRA_DOCK_STATE_CAR = 2;
     /**
-     * Used as an int value for {@link android.content.Intent#EXTRA_DOCK_STATE}
+     * Used as an int value for {@link Intent#EXTRA_DOCK_STATE}
      * to represent that the phone is in a analog (low end) dock.
      */
     public static final int EXTRA_DOCK_STATE_LE_DESK = 3;
     /**
-     * Used as an int value for {@link android.content.Intent#EXTRA_DOCK_STATE}
+     * Used as an int value for {@link Intent#EXTRA_DOCK_STATE}
      * to represent that the phone is in a digital (high end) dock.
      */
     public static final int EXTRA_DOCK_STATE_HE_DESK = 4;
@@ -3740,7 +3740,7 @@ public class Intent implements Parcelable, Cloneable {
     @Deprecated public static final String EXTRA_CHANGED_COMPONENT_NAME =
             "android.intent.extra.changed_component_name";
     /**
-     * This field is part of {@link android.content.Intent#ACTION_PACKAGE_CHANGED},
+     * This field is part of {@link Intent#ACTION_PACKAGE_CHANGED},
      * and contains a string array of all of the components that have changed.  If
      * the state of the overall package has changed, then it will contain an entry
      * with the package name itself.
@@ -3749,18 +3749,18 @@ public class Intent implements Parcelable, Cloneable {
             "android.intent.extra.changed_component_name_list";
     /**
      * This field is part of
-     * {@link android.content.Intent#ACTION_EXTERNAL_APPLICATIONS_AVAILABLE},
-     * {@link android.content.Intent#ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE},
-     * {@link android.content.Intent#ACTION_PACKAGES_SUSPENDED},
-     * {@link android.content.Intent#ACTION_PACKAGES_UNSUSPENDED}
+     * {@link Intent#ACTION_EXTERNAL_APPLICATIONS_AVAILABLE},
+     * {@link Intent#ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE},
+     * {@link Intent#ACTION_PACKAGES_SUSPENDED},
+     * {@link Intent#ACTION_PACKAGES_UNSUSPENDED}
      * and contains a string array of all of the components that have changed.
      */
     public static final String EXTRA_CHANGED_PACKAGE_LIST =
             "android.intent.extra.changed_package_list";
     /**
      * This field is part of
-     * {@link android.content.Intent#ACTION_EXTERNAL_APPLICATIONS_AVAILABLE},
-     * {@link android.content.Intent#ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE}
+     * {@link Intent#ACTION_EXTERNAL_APPLICATIONS_AVAILABLE},
+     * {@link Intent#ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE}
      * and contains an integer array of uids of all of the components
      * that have changed.
      */
@@ -4586,14 +4586,14 @@ public class Intent implements Parcelable, Cloneable {
      *
      * @see #setClass
      * @see #setComponent
-     * @see #Intent(String, android.net.Uri , Context, Class)
+     * @see #Intent(String, Uri , Context, Class)
      */
     public Intent(Context packageContext, Class<?> cls) {
         mComponent = new ComponentName(packageContext, cls);
     }
     /**
      * Create an intent for a specific component with a specified action and data.
-     * This is equivalent to using {@link #Intent(String, android.net.Uri)} to
+     * This is equivalent to using {@link #Intent(String, Uri)} to
      * construct the Intent and then calling {@link #setClass} to set its
      * class.
      *
@@ -4609,7 +4609,7 @@ public class Intent implements Parcelable, Cloneable {
      * this class.
      * @param cls The component class that is to be used for the intent.
      *
-     * @see #Intent(String, android.net.Uri)
+     * @see #Intent(String, Uri)
      * @see #Intent(Context, Class)
      * @see #setClass
      * @see #setComponent
@@ -5954,7 +5954,7 @@ public class Intent implements Parcelable, Cloneable {
      *
      * @see #getData
      * @see #setDataAndNormalize
-     * @see android.net.Uri#normalizeScheme()
+     * @see Uri#normalizeScheme()
      */
     public Intent setData(Uri data) {
         mData = data;
@@ -5968,7 +5968,7 @@ public class Intent implements Parcelable, Cloneable {
      * previously set (for example, by {@link #setType}).
      *
      * <p>The data Uri is normalized using
-     * {@link android.net.Uri#normalizeScheme} before it is set,
+     * {@link Uri#normalizeScheme} before it is set,
      * so really this is just a convenience method for
      * <pre>
      * setData(data.normalize())
@@ -5981,7 +5981,7 @@ public class Intent implements Parcelable, Cloneable {
      *
      * @see #getData
      * @see #setType
-     * @see android.net.Uri#normalizeScheme
+     * @see Uri#normalizeScheme
      */
     public Intent setDataAndNormalize(Uri data) {
         return setData(data.normalizeScheme());
@@ -6053,7 +6053,7 @@ public class Intent implements Parcelable, Cloneable {
      * <p><em>Note: MIME type and Uri scheme matching in the
      * Android framework is case-sensitive, unlike the formal RFC definitions.
      * As a result, you should always write these elements with lower case letters,
-     * or use {@link #normalizeMimeType} or {@link android.net.Uri#normalizeScheme} or
+     * or use {@link #normalizeMimeType} or {@link Uri#normalizeScheme} or
      * {@link #setDataAndTypeAndNormalize}
      * to ensure that they are converted to lower case.</em>
      *
@@ -6066,7 +6066,7 @@ public class Intent implements Parcelable, Cloneable {
      * @see #setType
      * @see #setData
      * @see #normalizeMimeType
-     * @see android.net.Uri#normalizeScheme
+     * @see Uri#normalizeScheme
      * @see #setDataAndTypeAndNormalize
      */
     public Intent setDataAndType(Uri data, String type) {
@@ -6081,7 +6081,7 @@ public class Intent implements Parcelable, Cloneable {
      * data with your own type given here.
      *
      * <p>The data Uri and the MIME type are normalize using
-     * {@link android.net.Uri#normalizeScheme} and {@link #normalizeMimeType}
+     * {@link Uri#normalizeScheme} and {@link #normalizeMimeType}
      * before they are set, so really this is just a convenience method for
      * <pre>
      * setDataAndType(data.normalize(), Intent.normalizeMimeType(type))
@@ -6097,7 +6097,7 @@ public class Intent implements Parcelable, Cloneable {
      * @see #setData
      * @see #setDataAndType
      * @see #normalizeMimeType
-     * @see android.net.Uri#normalizeScheme
+     * @see Uri#normalizeScheme
      */
     public Intent setDataAndTypeAndNormalize(Uri data, String type) {
         return setDataAndType(data.normalizeScheme(), normalizeMimeType(type));
@@ -7141,7 +7141,7 @@ public class Intent implements Parcelable, Cloneable {
      * the purpose of filtering.  The class implements its
      * {@link #equals equals()} and {@link #hashCode hashCode()} methods as
      * simple calls to {@link Intent#filterEquals(Intent)}  filterEquals()} and
-     * {@link android.content.Intent#filterHashCode()}  filterHashCode()}
+     * {@link Intent#filterHashCode()}  filterHashCode()}
      * on the wrapped Intent.
      */
     public static final class FilterComparison {
@@ -7542,8 +7542,8 @@ public class Intent implements Parcelable, Cloneable {
         }
         out.writeBundle(mExtras);
     }
-    public static final Parcelable.Creator<Intent> CREATOR
-            = new Parcelable.Creator<Intent>() {
+    public static final Creator<Intent> CREATOR
+            = new Creator<Intent>() {
         public Intent createFromParcel(Parcel in) {
             return new Intent(in);
         }

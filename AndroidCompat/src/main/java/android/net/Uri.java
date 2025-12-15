@@ -1471,8 +1471,8 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
     /**
      * Reads Uris from Parcels.
      */
-    public static final Parcelable.Creator<Uri> CREATOR
-            = new Parcelable.Creator<Uri>() {
+    public static final Creator<Uri> CREATOR
+            = new Creator<Uri>() {
         public Uri createFromParcel(Parcel in) {
             int type = in.readInt();
             switch (type) {

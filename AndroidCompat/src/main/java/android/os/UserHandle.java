@@ -74,15 +74,15 @@ public final class UserHandle implements Parcelable {
     /** @hide */
     public static final int ERR_GID = -1;
     /** @hide */
-    public static final int AID_ROOT = android.os.Process.ROOT_UID;
+    public static final int AID_ROOT = Process.ROOT_UID;
     /** @hide */
-    public static final int AID_APP_START = android.os.Process.FIRST_APPLICATION_UID;
+    public static final int AID_APP_START = Process.FIRST_APPLICATION_UID;
     /** @hide */
-    public static final int AID_APP_END = android.os.Process.LAST_APPLICATION_UID;
+    public static final int AID_APP_END = Process.LAST_APPLICATION_UID;
     /** @hide */
-    public static final int AID_SHARED_GID_START = android.os.Process.FIRST_SHARED_APPLICATION_GID;
+    public static final int AID_SHARED_GID_START = Process.FIRST_SHARED_APPLICATION_GID;
     /** @hide */
-    public static final int AID_CACHE_GID_START = android.os.Process.FIRST_APPLICATION_CACHE_GID;
+    public static final int AID_CACHE_GID_START = Process.FIRST_APPLICATION_CACHE_GID;
     final int mHandle;
     /**
      * Checks to see if the user id is the same for the two uids, i.e., they belong to the same
@@ -393,8 +393,8 @@ public final class UserHandle implements Parcelable {
         return h != USER_NULL ? new UserHandle(h) : null;
     }
     
-    public static final Parcelable.Creator<UserHandle> CREATOR
-            = new Parcelable.Creator<UserHandle>() {
+    public static final Creator<UserHandle> CREATOR
+            = new Creator<UserHandle>() {
         public UserHandle createFromParcel(Parcel in) {
             return new UserHandle(in);
         }

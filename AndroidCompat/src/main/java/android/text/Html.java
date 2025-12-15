@@ -1,7 +1,7 @@
 package android.text;
 
-import android.graphics.drawable.Drawable;
 
+import android.graphics.drawable.Drawable;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
@@ -21,7 +21,7 @@ public class Html {
         return new FakeSpanned(Jsoup.clean(source, Safelist.none()));
     }
 
-    public static Spanned fromHtml(String source, Html.ImageGetter imageGetter, Html.TagHandler tagHandler) {
+    public static Spanned fromHtml(String source, ImageGetter imageGetter, TagHandler tagHandler) {
         throw new RuntimeException("Stub!");
     }
 

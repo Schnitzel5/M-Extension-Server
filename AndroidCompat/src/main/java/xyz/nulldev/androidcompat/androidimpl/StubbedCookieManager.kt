@@ -30,16 +30,14 @@ class StubbedCookieManager : CookieManager() {
         throw NotImplementedError()
     }
 
-    override fun getCookie(url: String?, privateBrowsing: Boolean): String {
-        throw NotImplementedError()
-    }
-
+    @Deprecated("Deprecated in Java")
     override fun removeSessionCookie() {
     }
 
     override fun removeSessionCookies(callback: ValueCallback<Boolean>?) {
     }
 
+    @Deprecated("Deprecated in Java")
     override fun removeAllCookie() {
     }
 
@@ -50,10 +48,7 @@ class StubbedCookieManager : CookieManager() {
         throw NotImplementedError()
     }
 
-    override fun hasCookies(privateBrowsing: Boolean): Boolean {
-        throw NotImplementedError()
-    }
-
+    @Deprecated("Deprecated in Java")
     override fun removeExpiredCookie() {
     }
 

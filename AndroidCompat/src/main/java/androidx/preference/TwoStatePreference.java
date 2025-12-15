@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class TwoStatePreference extends Preference {
     private CharSequence mSummaryOn;
     private CharSequence mSummaryOff;
-    private boolean isChecked =false;
 
     public TwoStatePreference(Context context) {
         super(context);
@@ -21,10 +20,10 @@ public class TwoStatePreference extends Preference {
     }
 
     @JsonIgnore
-    public boolean isChecked() { return isChecked; }
+    public boolean isChecked() { throw new RuntimeException("Stub!"); }
 
     @JsonIgnore
-    public void setChecked(boolean checked) { this.isChecked = isChecked; }
+    public void setChecked(boolean checked) { throw new RuntimeException("Stub!"); }
 
     @JsonIgnore
     public CharSequence getSummaryOn() {

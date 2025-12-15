@@ -188,8 +188,8 @@ public final class PersistableBundle extends BaseBundle implements Cloneable, Pa
             return null;
         }
     }
-    public static final Parcelable.Creator<PersistableBundle> CREATOR =
-            new Parcelable.Creator<PersistableBundle>() {
+    public static final Creator<PersistableBundle> CREATOR =
+            new Creator<PersistableBundle>() {
                 @Override
                 public PersistableBundle createFromParcel(Parcel in) {
                     return in.readPersistableBundle();

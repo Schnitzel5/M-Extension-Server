@@ -8,13 +8,11 @@ package mextensionserver.impl
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.pm.PackageInfo
-import eu.kanade.tachiyomi.source.Source
-import eu.kanade.tachiyomi.source.SourceFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import mextensionserver.util.Extension
 import mextensionserver.util.PackageTools.dex2jar
 import mextensionserver.util.PackageTools.getPackageInfo
 import mextensionserver.util.PackageTools.loadExtensionSources
-import mu.KotlinLogging
 import java.io.File
 import java.nio.file.Files
 import java.util.Base64

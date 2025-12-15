@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -14,6 +16,9 @@ allprojects {
 
     repositories {
         mavenCentral()
+        google()
+        maven("https://github.com/Suwayomi/Suwayomi-Server/raw/android-jar/")
+        maven("https://jogamp.org/deployment/maven")
         maven("https://maven.google.com/")
         maven("https://jitpack.io")
         maven("https://dl.google.com/dl/android/maven2/")
@@ -32,13 +37,13 @@ configure(projects) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 

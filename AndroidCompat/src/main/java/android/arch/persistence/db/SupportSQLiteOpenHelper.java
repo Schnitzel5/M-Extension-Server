@@ -128,9 +128,9 @@ public interface SupportSQLiteOpenHelper {
         private static final String TAG = "SupportSQLite";
         /**
          * Version number of the database (starting at 1); if the database is older,
-         * {@link SupportSQLiteOpenHelper.Callback#onUpgrade(SupportSQLiteDatabase, int, int)}
+         * {@link Callback#onUpgrade(SupportSQLiteDatabase, int, int)}
          * will be used to upgrade the database; if the database is newer,
-         * {@link SupportSQLiteOpenHelper.Callback#onDowngrade(SupportSQLiteDatabase, int, int)}
+         * {@link Callback#onDowngrade(SupportSQLiteDatabase, int, int)}
          * will be used to downgrade the database.
          */
         public final int version;
@@ -326,7 +326,7 @@ public interface SupportSQLiteOpenHelper {
          * The callback class to handle creation, upgrade and downgrade.
          */
         @NonNull
-        public final SupportSQLiteOpenHelper.Callback callback;
+        public final Callback callback;
 
         Configuration(@NonNull Context context, @Nullable String name, @NonNull Callback callback) {
             this.context = context;
@@ -349,7 +349,7 @@ public interface SupportSQLiteOpenHelper {
         public static class Builder {
             Context mContext;
             String mName;
-            SupportSQLiteOpenHelper.Callback mCallback;
+            Callback mCallback;
 
             Builder(@NonNull Context context) {
                 mContext = context;

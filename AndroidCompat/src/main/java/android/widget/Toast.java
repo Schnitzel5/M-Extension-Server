@@ -5,8 +5,7 @@ package android.widget;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 public class Toast {
     public static final int LENGTH_LONG = 1;
@@ -74,11 +73,11 @@ public class Toast {
         throw new RuntimeException("Stub!");
     }
 
-    public static Toast makeText(android.content.Context context, java.lang.CharSequence text, int duration) {
+    public static Toast makeText(android.content.Context context, CharSequence text, int duration) {
         return new Toast(text);
     }
 
-    public static android.widget.Toast makeText(android.content.Context context, int resId, int duration) throws android.content.res.Resources.NotFoundException {
+    public static Toast makeText(android.content.Context context, int resId, int duration) throws android.content.res.Resources.NotFoundException {
         throw new RuntimeException("Stub!");
     }
 
@@ -86,7 +85,7 @@ public class Toast {
         throw new RuntimeException("Stub!");
     }
 
-    public void setText(java.lang.CharSequence s) {
+    public void setText(CharSequence s) {
         throw new RuntimeException("Stub!");
     }
 }
