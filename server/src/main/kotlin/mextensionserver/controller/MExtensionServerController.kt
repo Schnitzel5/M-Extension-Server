@@ -1,8 +1,8 @@
 package mextensionserver.controller
 
 import fi.iki.elonen.NanoHTTPD
+import io.github.oshai.kotlinlogging.KotlinLogging
 import mextensionserver.impl.MExtensionServerLoader
-import mu.KotlinLogging
 import java.io.IOException
 
 class MExtensionServerController {

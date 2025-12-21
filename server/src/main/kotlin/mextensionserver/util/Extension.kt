@@ -7,14 +7,12 @@ package mextensionserver.util
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
-import kotlin.io.path.outputStream
-import kotlin.io.path.relativeTo
 
 object Extension {
     private val logger = KotlinLogging.logger {}

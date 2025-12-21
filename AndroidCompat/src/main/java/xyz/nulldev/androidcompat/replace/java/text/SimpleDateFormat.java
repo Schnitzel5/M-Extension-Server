@@ -5,8 +5,7 @@ package xyz.nulldev.androidcompat.replace.java.text;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import com.ibm.icu.text.DateFormatSymbols;
 import com.ibm.icu.text.DisplayContext;
@@ -15,17 +14,14 @@ import com.ibm.icu.util.ULocale;
 import xyz.nulldev.androidcompat.replace.java.util.Calendar;
 import xyz.nulldev.androidcompat.replace.java.util.TimeZone;
 
-import java.text.AttributedCharacterIterator;
-import java.text.FieldPosition;
-import java.text.ParseException;
-import java.text.ParsePosition;
+import java.text.*;
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * Overridden to switch to Android implementation
  */
-public class SimpleDateFormat extends java.text.DateFormat {
+public class SimpleDateFormat extends DateFormat {
     private com.ibm.icu.text.SimpleDateFormat delegate;
 
     public SimpleDateFormat() {

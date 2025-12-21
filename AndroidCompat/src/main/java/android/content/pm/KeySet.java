@@ -54,8 +54,8 @@ public class KeySet implements Parcelable {
      * Implement Parcelable
      * @hide
      */
-    public static final Parcelable.Creator<KeySet> CREATOR
-            = new Parcelable.Creator<KeySet>() {
+    public static final Creator<KeySet> CREATOR
+            = new Creator<KeySet>() {
         /**
          * Create a KeySet from a Parcel
          *

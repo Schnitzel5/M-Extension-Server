@@ -420,8 +420,8 @@ public final class ContentValues implements Parcelable {
     public Set<String> keySet() {
         return mValues.keySet();
     }
-    public static final Parcelable.Creator<ContentValues> CREATOR =
-            new Parcelable.Creator<ContentValues>() {
+    public static final Creator<ContentValues> CREATOR =
+            new Creator<ContentValues>() {
         @SuppressWarnings({"deprecation", "unchecked"})
         public ContentValues createFromParcel(Parcel in) {
             // TODO - what ClassLoader should be passed to readHashMap?

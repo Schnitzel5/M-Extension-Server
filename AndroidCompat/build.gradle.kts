@@ -1,24 +1,51 @@
 plugins {
-    application
-    kotlin("plugin.serialization")
+    id(
+        libs.plugins.kotlin.jvm
+            .get()
+            .pluginId,
+    )
+    id(
+        libs.plugins.kotlin.serialization
+            .get()
+            .pluginId,
+    )
+    id(
+        libs.plugins.kotlinter
+            .get()
+            .pluginId,
+    )
 }
 
 dependencies {
-    implementation(libs.bundles.androidcompat.implementation)
-    compileOnly(libs.bundles.androidcompat.compileonly)
+    // Shared
+    implementation(libs.bundles.shared)
+    testImplementation(libs.bundles.sharedTest)
 
     // Android stub library
-    implementation(fileTree("lib/"))
+    implementation(libs.android.stubs)
+
+    // XML
+    compileOnly(libs.xmlpull)
 
     // Config API
-    implementation(project(":AndroidCompat:Config"))
+    implementation(projects.androidCompat.config)
 
-    annotationProcessor(libs.quickjs4j.processor)
+    // APK sig verifier
+    compileOnly(libs.apksig)
 
-}
+    // AndroidX annotations
+    compileOnly(libs.android.annotations)
 
-tasks {
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
+    // substitute for duktape-android/quickjs
+    implementation(libs.bundles.polyglot)
+
+    // Kotlin wrapper around Java Preferences, makes certain things easier
+    implementation(libs.bundles.settings)
+
+    // Android version of SimpleDateFormat
+    implementation(libs.icu4j)
+
+    // OpenJDK lacks native JPEG encoder and native WEBP decoder
+    implementation(libs.bundles.twelvemonkeys)
+    implementation(libs.imageio.webp)
 }

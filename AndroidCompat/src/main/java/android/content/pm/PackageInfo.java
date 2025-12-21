@@ -289,8 +289,8 @@ public class PackageInfo implements Parcelable {
         dest.writeString(requiredAccountType);
         dest.writeString(overlayTarget);
     }
-    public static final Parcelable.Creator<PackageInfo> CREATOR
-            = new Parcelable.Creator<PackageInfo>() {
+    public static final Creator<PackageInfo> CREATOR
+            = new Creator<PackageInfo>() {
         @Override
         public PackageInfo createFromParcel(Parcel source) {
             return new PackageInfo(source);

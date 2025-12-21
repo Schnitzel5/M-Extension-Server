@@ -1,33 +1,26 @@
 package app.cash.quickjs;
 
-import io.roastedroot.quickjs4j.core.Engine;
-import io.roastedroot.quickjs4j.core.Runner;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.graalvm.polyglot.*;
 
 import java.io.Closeable;
-import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class QuickJs implements Closeable {
-    private Runner runner;
-    private ObjectMapper mapper;
-    private JavaApi javaApi;
+    private Context context;
 
     public static QuickJs create() {
         return new QuickJs();
     }
 
     public QuickJs() {
-        this.mapper = new ObjectMapper();
-        this.javaApi = new JavaApi();
-        
-        Engine engine = Engine.builder()
-            .addBuiltins(JavaApi_Builtins.toBuiltins(javaApi))
-            .build();
-        
-        this.runner = Runner.builder().withEngine(engine).build();
+        this.context = Context
+                .newBuilder("js")
+                .allowHostAccess(HostAccess.ALL)
+                .allowPolyglotAccess(PolyglotAccess.NONE)
+                .allowHostClassLoading(false)
+                .build();
+        context.enter();
     }
 
     public Object evaluate(String script, String ignoredFileName) {
@@ -36,106 +29,49 @@ public final class QuickJs implements Closeable {
 
     public Object evaluate(String script) {
         try {
-            // Inject bound objects as JS objects with methods
-            StringBuilder fullScript = new StringBuilder();
-            for (String name : javaApi.boundObjects.keySet()) {
-                fullScript.append("var ").append(name).append(" = {\n");
-                Object obj = javaApi.boundObjects.get(name);
-                Method[] methods = obj.getClass().getMethods();
-                for (Method method : methods) {
-                    if (method.getDeclaringClass() != Object.class) { // Skip Object methods
-                        fullScript.append("  ").append(method.getName()).append(": function(");
-                        Class<?>[] params = method.getParameterTypes();
-                        for (int i = 0; i < params.length; i++) {
-                            if (i > 0) fullScript.append(", ");
-                            fullScript.append("arg").append(i);
-                        }
-                        fullScript.append(") { return javaApi.callBoundMethod('").append(name).append("', '").append(method.getName()).append("'");
-                        for (int i = 0; i < params.length; i++) {
-                            fullScript.append(", arg").append(i);
-                        }
-                        fullScript.append("); },\n");
-                    }
-                }
-                fullScript.append("};\n");
-            }
-            fullScript.append(script);
-            
-            // Wrap the script to output the result as JSON, handling undefined
-            String wrappedScript = "console.log('QuickJs: Starting script execution');\n" +
-                "try {\n" +
-                "let __result = (" + fullScript.toString() + ");\n" +
-                "console.log('QUICJS_RESULT:' + (__result === undefined ? 'null' : JSON.stringify(__result)));\n" +
-                "} catch (e) {\n" +
-                "console.log('QUICJS_RESULT:{\"error\": \"' + e.message + '\"}');\n" +
-                "}";
-            try {
-                runner.compileAndExec(wrappedScript);
-            } catch (Exception e) {
-                return translateTypeFromJson("{\"error\": \"JavaScript execution failed: " + e.getMessage() + "\"}");
-            }
-            
-            String output = runner.stdout().trim();
-            
-            String[] lines = output.split("\n");
-            String resultLine = null;
-            for (String line : lines) {
-                if (line.startsWith("QUICJS_RESULT:")) {
-                    resultLine = line.substring(7);
-                    break;
-                }
-            }
-            
-            if (resultLine == null) {
-                throw new QuickJsException("No RESULT marker found in JavaScript output: " + output, null);
-            }
-            
-            if (resultLine.isEmpty()) {
-                throw new QuickJsException("Empty result from JavaScript execution", null);
-            }
-            
-            try {
-                return translateTypeFromJson(resultLine);
-            } catch (Exception e) {
-                throw new QuickJsException("JSON parsing error: " + e.getMessage() + " for input: " + resultLine, e);
-            }
+            Value value = context.eval("js", script);
+            return translateType(value);
         } catch (Exception exception) {
             throw new QuickJsException(exception.getMessage(), exception);
         }
     }
 
-    private Object translateTypeFromJson(String json) throws Exception {
-        Object value = mapper.readValue(json, Object.class);
-        return translateType(value);
-    }
-
-    private Object translateType(Object obj) {
-        if (obj instanceof Boolean) {
-            return obj;
-        } else if (obj instanceof Number) {
-            Number num = (Number) obj;
-            if (num.doubleValue() == num.intValue()) {
-                return num.intValue();
-            } else {
-                return num.doubleValue();
-            }
-        } else if (obj instanceof String) {
-            return obj;
-        } else if (obj instanceof java.util.List) {
-            java.util.List<?> list = (java.util.List<?>) obj;
-            if (list.isEmpty()) {
+    private Object translateType(Value obj) {
+        if (obj.isBoolean()) {
+            return obj.asBoolean();
+        } else if (obj.hasArrayElements()) {
+            if (obj.getArraySize() == 0) {
                 return new int[0];
-            }
-            Object first = list.get(0);
-            if (first instanceof Boolean) {
-                return list.stream().map(Boolean.class::cast).toArray(Boolean[]::new);
-            } else if (first instanceof Number) {
-                return list.stream().mapToDouble(o -> ((Number) o).doubleValue()).toArray();
-            } else if (first instanceof String) {
-                return list.toArray(new String[0]);
             } else {
-                return list.toArray();
+                Value element = obj.getArrayElement(0);
+                if (element.isBoolean()) {
+                    return obj.as(boolean[].class);
+                } else if (element.isNumber()) {
+                    if (element.fitsInInt()) {
+                        return obj.as(int[].class);
+                    } else if (element.fitsInBigInteger()) {
+                        return Arrays.stream(obj.as(BigInteger[].class)).map(BigInteger::longValue).toArray();
+                    } else {
+                        return obj.as(double[].class);
+                    }
+                } else if (element.isHostObject()) {
+                    return obj.as(Object[].class);
+                } else if (element.isString()) {
+                    return obj.as(String[].class);
+                }
             }
+        } else if (obj.isNumber()) {
+            if (obj.fitsInInt()) {
+                return obj.asInt();
+            } else if (obj.fitsInBigInteger()) {
+                return obj.asBigInteger().longValue();
+            } else {
+                return obj.asDouble();
+            }
+        } else if (obj.isHostObject()) {
+            return obj.asHostObject();
+        } else if (obj.isString()) {
+            return obj.asString();
         }
         return obj;
     }
@@ -149,14 +85,15 @@ public final class QuickJs implements Closeable {
     }
 
     public <T> void set(String name, Class<T> ignoredType, T object) {
-        javaApi.bindObject(name, object);
+        context.getBindings("js").putMember(name, object);
     }
 
     @Override
     public void close() {
-        if (this.runner != null) {
-            this.runner.close();
-            this.runner = null;
+        if (this.context != null) {
+            this.context.leave();
+            this.context.close();
+            this.context = null;
         }
     }
 }

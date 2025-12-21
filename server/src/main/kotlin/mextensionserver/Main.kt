@@ -9,21 +9,24 @@ package mextensionserver
  */
 
 import eu.kanade.tachiyomi.App
+import io.github.oshai.kotlinlogging.KotlinLogging
 import mextensionserver.controller.MExtensionServerController
-import mu.KotlinLogging
 import org.kodein.di.DI
 import org.kodein.di.conf.global
 import xyz.nulldev.androidcompat.AndroidCompat
 import xyz.nulldev.androidcompat.AndroidCompatInitializer
 import xyz.nulldev.ts.config.ConfigKodeinModule
+import java.net.CookieHandler
+import java.net.CookieManager
 
 private val logger = KotlinLogging.logger {}
 private val androidCompat by lazy { AndroidCompat() }
 
 @Suppress("BlockingMethodInNonBlockingContext")
-suspend fun main(args: Array<String>) {
+fun main(args: Array<String>) {
     val port = args.getOrNull(0)?.toIntOrNull() ?: 0
     val appDir = args.getOrNull(1)
+    CookieHandler.setDefault(CookieManager())
     initApplication(appDir)
     val controller = MExtensionServerController()
     controller.start(port)

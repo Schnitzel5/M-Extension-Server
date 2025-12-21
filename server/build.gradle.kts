@@ -86,12 +86,14 @@ tasks {
     }
 
     withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
-                "-opt-in=kotlin.io.path.ExperimentalPathApi",
+        compilerOptions {
+            freeCompilerArgs.set(
+                listOf(
+                    "-opt-in=kotlin.RequiresOptIn",
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
+                    "-opt-in=kotlin.io.path.ExperimentalPathApi",
+                )
             )
         }
     }

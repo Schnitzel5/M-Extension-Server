@@ -5,8 +5,7 @@ package android.widget;
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. 
- */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 public class EditText {
     public EditText(android.content.Context context) { throw new RuntimeException("Stub!"); }
@@ -25,7 +24,7 @@ public class EditText {
 
     public android.text.Editable getText() { throw new RuntimeException("Stub!"); }
 
-    public void setText(java.lang.CharSequence text, android.widget.TextView.BufferType type) { throw new RuntimeException("Stub!"); }
+    public void setText(CharSequence text, android.widget.TextView.BufferType type) { throw new RuntimeException("Stub!"); }
 
     public void setSelection(int start, int stop) { throw new RuntimeException("Stub!"); }
 
@@ -37,5 +36,5 @@ public class EditText {
 
     public void setEllipsize(android.text.TextUtils.TruncateAt ellipsis) { throw new RuntimeException("Stub!"); }
 
-    public java.lang.CharSequence getAccessibilityClassName() { throw new RuntimeException("Stub!"); }
+    public CharSequence getAccessibilityClassName() { throw new RuntimeException("Stub!"); }
 }

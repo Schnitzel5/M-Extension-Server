@@ -15,10 +15,9 @@ public class ListPreference extends Preference {
     // reference: https://android.googlesource.com/platform/frameworks/support/+/996971f962fcd554339a7cb2859cef9ca89dbcb7/preference/preference/src/main/java/androidx/preference/ListPreference.java
     // Note: remove @JsonIgnore and implement methods if any extension ever uses these methods or the variables behind them
 
+    private CharSequence value;
     private CharSequence[] entries;
     private CharSequence[] entryValues;
-    private String value;
-    public int valueIndex;
 
     public ListPreference(Context context) {
         super(context);
@@ -52,13 +51,19 @@ public class ListPreference extends Preference {
     }
 
     @JsonIgnore
-    public void setValueIndex(int index) { this.valueIndex = index; }
+    public void setValueIndex(int index) {
+        value = entryValues[index];
+    }
 
     @JsonIgnore
-    public String getValue() { this.value = entryValues[valueIndex].toString(); return value; }
+    public String getValue() {
+        return (String) this.value;
+    }
 
     @JsonIgnore
-    public void setValue(String value) {entryValues[valueIndex] =value; this.value = value; }
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     /** Tachidesk specific API */
     @Override

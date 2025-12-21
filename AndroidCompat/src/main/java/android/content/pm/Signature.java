@@ -163,8 +163,8 @@ public class Signature implements Parcelable {
     public void writeToParcel(Parcel dest, int parcelableFlags) {
         dest.writeByteArray(mSignature);
     }
-    public static final Parcelable.Creator<Signature> CREATOR
-            = new Parcelable.Creator<Signature>() {
+    public static final Creator<Signature> CREATOR
+            = new Creator<Signature>() {
         public Signature createFromParcel(Parcel source) {
             return new Signature(source);
         }

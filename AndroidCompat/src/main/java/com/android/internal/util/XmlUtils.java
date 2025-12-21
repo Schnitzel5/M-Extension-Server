@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 package com.android.internal.util;
+
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.ArrayMap;
@@ -25,19 +26,14 @@ import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 /** {@hide} */
 public class XmlUtils {
     private static final String STRING_ARRAY_SEPARATOR = ":";
@@ -153,7 +149,7 @@ public class XmlUtils {
      * @see #readMapXml
      */
     public static final void writeMapXml(Map val, OutputStream out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         XmlSerializer serializer = new FastXmlSerializer();
         serializer.setOutput(out, StandardCharsets.UTF_8.name());
         serializer.startDocument(null, true);
@@ -174,7 +170,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final void writeListXml(List val, OutputStream out)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         XmlSerializer serializer = Xml.newSerializer();
         serializer.setOutput(out, StandardCharsets.UTF_8.name());
@@ -198,7 +194,7 @@ public class XmlUtils {
      * @see #readMapXml
      */
     public static final void writeMapXml(Map val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         writeMapXml(val, name, out, null);
     }
     /**
@@ -219,7 +215,7 @@ public class XmlUtils {
      * @hide
      */
     public static final void writeMapXml(Map val, String name, XmlSerializer out,
-            WriteMapCallback callback) throws XmlPullParserException, java.io.IOException {
+            WriteMapCallback callback) throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -248,7 +244,7 @@ public class XmlUtils {
      * @hide
      */
     public static final void writeMapXml(Map val, XmlSerializer out,
-            WriteMapCallback callback) throws XmlPullParserException, java.io.IOException {
+            WriteMapCallback callback) throws XmlPullParserException, IOException {
         if (val == null) {
             return;
         }
@@ -274,7 +270,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final void writeListXml(List val, String name, XmlSerializer out)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         if (val == null) {
             out.startTag(null, "null");
@@ -295,7 +291,7 @@ public class XmlUtils {
     }
     
     public static final void writeSetXml(Set val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -327,7 +323,7 @@ public class XmlUtils {
      */
     public static final void writeByteArrayXml(byte[] val, String name,
             XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -365,7 +361,7 @@ public class XmlUtils {
      */
     public static final void writeIntArrayXml(int[] val, String name,
             XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -398,7 +394,7 @@ public class XmlUtils {
      * @see #readThisIntArrayXml
      */
     public static final void writeLongArrayXml(long[] val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -431,7 +427,7 @@ public class XmlUtils {
      * @see #readThisIntArrayXml
      */
     public static final void writeDoubleArrayXml(double[] val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -464,7 +460,7 @@ public class XmlUtils {
      * @see #readThisIntArrayXml
      */
     public static final void writeStringArrayXml(String[] val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -497,7 +493,7 @@ public class XmlUtils {
      * @see #readThisIntArrayXml
      */
     public static final void writeBooleanArrayXml(boolean[] val, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         if (val == null) {
             out.startTag(null, "null");
             out.endTag(null, "null");
@@ -533,7 +529,7 @@ public class XmlUtils {
      * @see #readValueXml
      */
     public static final void writeValueXml(Object v, String name, XmlSerializer out)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         writeValueXml(v, name, out, null);
     }
     /**
@@ -554,7 +550,7 @@ public class XmlUtils {
      * @see #readValueXml
      */
     private static final void writeValueXml(Object v, String name, XmlSerializer out,
-            WriteMapCallback callback)  throws XmlPullParserException, java.io.IOException {
+            WriteMapCallback callback)  throws XmlPullParserException, IOException {
         String typeStr;
         if (v == null) {
             out.startTag(null, "null");
@@ -647,7 +643,7 @@ public class XmlUtils {
      */
     @SuppressWarnings("unchecked")
     public static final HashMap<String, ?> readMapXml(InputStream in)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         XmlPullParser   parser = Xml.newPullParser();
         parser.setInput(in, StandardCharsets.UTF_8.name());
@@ -667,7 +663,7 @@ public class XmlUtils {
      * @see #writeListXml
      */
     public static final ArrayList readListXml(InputStream in)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         XmlPullParser   parser = Xml.newPullParser();
         parser.setInput(in, StandardCharsets.UTF_8.name());
@@ -684,14 +680,14 @@ public class XmlUtils {
      * @return HashSet The resulting set.
      * 
      * @throws XmlPullParserException
-     * @throws java.io.IOException
+     * @throws IOException
      * 
      * @see #readValueXml
      * @see #readThisSetXml
      * @see #writeSetXml
      */
     public static final HashSet readSetXml(InputStream in)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         XmlPullParser parser = Xml.newPullParser();
         parser.setInput(in, null);
         return (HashSet) readValueXml(parser, new String[1]);
@@ -711,7 +707,7 @@ public class XmlUtils {
      * @see #readMapXml
      */
     public static final HashMap<String, ?> readThisMapXml(XmlPullParser parser, String endTag,
-            String[] name) throws XmlPullParserException, java.io.IOException {
+            String[] name) throws XmlPullParserException, IOException {
         return readThisMapXml(parser, endTag, name, null);
     }
     /**
@@ -731,7 +727,7 @@ public class XmlUtils {
      */
     public static final HashMap<String, ?> readThisMapXml(XmlPullParser parser, String endTag,
             String[] name, ReadMapCallback callback)
-            throws XmlPullParserException, java.io.IOException
+            throws XmlPullParserException, IOException
     {
         HashMap<String, Object> map = new HashMap<String, Object>();
         int eventType = parser.getEventType();
@@ -757,7 +753,7 @@ public class XmlUtils {
      */
     public static final ArrayMap<String, ?> readThisArrayMapXml(XmlPullParser parser, String endTag,
             String[] name, ReadMapCallback callback)
-            throws XmlPullParserException, java.io.IOException
+            throws XmlPullParserException, IOException
     {
         ArrayMap<String, Object> map = new ArrayMap<>();
         int eventType = parser.getEventType();
@@ -792,7 +788,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final ArrayList readThisListXml(XmlPullParser parser, String endTag,
-            String[] name) throws XmlPullParserException, java.io.IOException {
+            String[] name) throws XmlPullParserException, IOException {
         return readThisListXml(parser, endTag, name, null, false);
     }
     /**
@@ -811,7 +807,7 @@ public class XmlUtils {
      */
     private static final ArrayList readThisListXml(XmlPullParser parser, String endTag,
             String[] name, ReadMapCallback callback, boolean arrayMap)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         ArrayList list = new ArrayList();
         int eventType = parser.getEventType();
         do {
@@ -844,12 +840,12 @@ public class XmlUtils {
      * @return HashSet The newly generated set.
      *
      * @throws XmlPullParserException
-     * @throws java.io.IOException
+     * @throws IOException
      *
      * @see #readSetXml
      */
     public static final HashSet readThisSetXml(XmlPullParser parser, String endTag, String[] name)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         return readThisSetXml(parser, endTag, name, null, false);
     }
     /**
@@ -865,14 +861,14 @@ public class XmlUtils {
      * @return HashSet The newly generated set.
      * 
      * @throws XmlPullParserException
-     * @throws java.io.IOException
+     * @throws IOException
      * 
      * @see #readSetXml
      * @hide
      */
     private static final HashSet readThisSetXml(XmlPullParser parser, String endTag, String[] name,
             ReadMapCallback callback, boolean arrayMap)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         HashSet set = new HashSet();
         
         int eventType = parser.getEventType();
@@ -910,7 +906,7 @@ public class XmlUtils {
      */
     public static final byte[] readThisByteArrayXml(XmlPullParser parser,
             String endTag, String[] name)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -972,7 +968,7 @@ public class XmlUtils {
      */
     public static final int[] readThisIntArrayXml(XmlPullParser parser,
             String endTag, String[] name)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -1036,7 +1032,7 @@ public class XmlUtils {
      */
     public static final long[] readThisLongArrayXml(XmlPullParser parser,
             String endTag, String[] name)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -1091,7 +1087,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final double[] readThisDoubleArrayXml(XmlPullParser parser, String endTag,
-            String[] name) throws XmlPullParserException, java.io.IOException {
+            String[] name) throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -1146,7 +1142,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final String[] readThisStringArrayXml(XmlPullParser parser, String endTag,
-            String[] name) throws XmlPullParserException, java.io.IOException {
+            String[] name) throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -1201,7 +1197,7 @@ public class XmlUtils {
      * @see #readListXml
      */
     public static final boolean[] readThisBooleanArrayXml(XmlPullParser parser, String endTag,
-            String[] name) throws XmlPullParserException, java.io.IOException {
+            String[] name) throws XmlPullParserException, IOException {
         int num;
         try {
             num = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -1258,7 +1254,7 @@ public class XmlUtils {
      * @see #writeValueXml
      */
     public static final Object readValueXml(XmlPullParser parser, String[] name)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         int eventType = parser.getEventType();
         do {
@@ -1278,7 +1274,7 @@ public class XmlUtils {
     }
     private static final Object readThisValueXml(XmlPullParser parser, String[] name,
             ReadMapCallback callback, boolean arrayMap)
-            throws XmlPullParserException, java.io.IOException {
+            throws XmlPullParserException, IOException {
         final String valueName = parser.getAttributeValue(null, "name");
         final String tagName = parser.getName();
         //System.out.println("Reading this value tag: " + tagName + ", name=" + valueName);
@@ -1388,7 +1384,7 @@ public class XmlUtils {
             "Unexpected end of document in <" + tagName + ">");
     }
     private static final Object readThisPrimitiveValueXml(XmlPullParser parser, String tagName)
-    throws XmlPullParserException, java.io.IOException
+    throws XmlPullParserException, IOException
     {
         try {
             if (tagName.equals("int")) {
@@ -1396,9 +1392,9 @@ public class XmlUtils {
             } else if (tagName.equals("long")) {
                 return Long.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("float")) {
-                return new Float(parser.getAttributeValue(null, "value"));
+                return Float.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("double")) {
-                return new Double(parser.getAttributeValue(null, "value"));
+                return Double.valueOf(parser.getAttributeValue(null, "value"));
             } else if (tagName.equals("boolean")) {
                 return Boolean.valueOf(parser.getAttributeValue(null, "value"));
             } else {
