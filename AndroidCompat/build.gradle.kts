@@ -36,8 +36,7 @@ dependencies {
     // AndroidX annotations
     compileOnly(libs.android.annotations)
 
-    // substitute for duktape-android/quickjs
-    implementation(libs.bundles.polyglot)
+    annotationProcessor(libs.quickjs4j.processor)
 
     // Kotlin wrapper around Java Preferences, makes certain things easier
     implementation(libs.bundles.settings)

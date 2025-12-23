@@ -54,16 +54,16 @@ public final class Canvas {
         GlyphVector glyphVector = paint.getTypeface().getFont().createGlyphVector(canvas.getFontRenderContext(), text.getIterator());
         Shape textShape = glyphVector.getOutline();
         switch (paint.getStyle()) {
-            case Paint.Style.FILL:
+            case FILL:
                 canvas.drawString(text.getIterator(), x, y);
                 break;
-            case Paint.Style.STROKE:
+            case STROKE:
                 save();
                 translate(x, y);
                 canvas.draw(textShape);
                 restore();
                 break;
-            case Paint.Style.FILL_AND_STROKE:
+            case FILL_AND_STROKE:
                 save();
                 translate(x, y);
                 canvas.draw(textShape);

@@ -18,6 +18,7 @@ public class MultiSelectListPreference extends DialogPreference {
 
     private CharSequence[] entries;
     private CharSequence[] entryValues;
+    private Set<String> values;
 
     public MultiSelectListPreference(Context context) {
         super(context);
@@ -41,12 +42,12 @@ public class MultiSelectListPreference extends DialogPreference {
 
     @JsonIgnore
     public void setValues(Set<String> values) {
-        throw new RuntimeException("Stub!");
+        this.values = values;
     }
 
     @JsonIgnore
     public Set<String> getValues() {
-        throw new RuntimeException("Stub!");
+        return values;
     }
 
     public int findIndexOfValue(String value) {
